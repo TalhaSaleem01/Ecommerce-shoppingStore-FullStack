@@ -7,7 +7,7 @@ import { useToast } from '../context/ToastContext'
 import ProductCard from '../components/ProductCard'
 import './ProductListing.css'
 
-const VISIBLE_LIMIT = 4 
+const VISIBLE_LIMIT = 4
 export default function ProductListing() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState([])
@@ -19,6 +19,7 @@ export default function ProductListing() {
   const [showAllCategories, setShowAllCategories] = useState(false)
   const [showAllBrands, setShowAllBrands] = useState(false)
   const [showAllFeatures, setShowAllFeatures] = useState(false)
+  const [filtersOpen, setFiltersOpen] = useState(false)
 
   const { addToCart } = useCart()
   const { user } = useAuth()
@@ -60,6 +61,22 @@ export default function ProductListing() {
     }
     load()
   }, [search, categorySlug, sort, selectedBrands, selectedFeatures, featuredOnly])
+
+  // Lock background scroll while the mobile filters drawer is open
+  useEffect(() => {
+    if (filtersOpen) {
+      const scrollY = window.scrollY
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollY}px`
+      document.body.style.width = '100%'
+      return () => {
+        document.body.style.position = ''
+        document.body.style.top = ''
+        document.body.style.width = ''
+        window.scrollTo(0, scrollY)
+      }
+    }
+  }, [filtersOpen])
 
   const filtered = useMemo(() => {
     return products.filter((p) => {
@@ -116,8 +133,37 @@ export default function ProductListing() {
         {search && <span> · Results for "{search}"</span>}
       </div>
 
+      <button
+        type="button"
+        className="listing__filters-toggle"
+        onClick={() => setFiltersOpen(true)}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+        Filter
+      </button>
+
       <div className="listing__layout">
-        <aside className="listing__sidebar">
+        {filtersOpen && (
+          <div className="listing__filters-overlay" onClick={() => setFiltersOpen(false)} />
+        )}
+
+        <aside className={`listing__sidebar ${filtersOpen ? 'is-open' : ''}`}>
+          <div className="listing__sidebar-header">
+            <h3>Filters</h3>
+            <button
+              type="button"
+              className="listing__sidebar-close"
+              onClick={() => setFiltersOpen(false)}
+              aria-label="Close filters"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+
           <div className="listing__filter-block">
             <h3>Category</h3>
             <ul>
@@ -256,6 +302,14 @@ export default function ProductListing() {
               ))}
             </ul>
           </div>
+
+          <button
+            type="button"
+            className="listing__sidebar-apply"
+            onClick={() => setFiltersOpen(false)}
+          >
+            Show {filtered.length} results
+          </button>
         </aside>
 
         <div className="listing__main">

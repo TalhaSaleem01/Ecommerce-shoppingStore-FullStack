@@ -82,8 +82,8 @@ export default function Home() {
         </aside>
 
         <div className="home__hero">
-  <img src={heroBanner} alt="Hero banner" className="home__hero-img" />
-</div>
+          <img src={heroBanner} alt="Hero banner" className="home__hero-img" />
+        </div>
       </section>
 
       <section className="container home__section">
@@ -187,7 +187,7 @@ export default function Home() {
       <section className="container home__section">
         <div className="home__section-head">
           <h2>Recommended items</h2>
-          <Link to="/products" className="home__see-all">See all →</Link>
+          <Link to="/products" className="home__see-all">See all -&gt;</Link>
         </div>
         {loading ? (
           <SkeletonRow count={10} />
@@ -228,7 +228,9 @@ export default function Home() {
         <div className="home__regions-grid">
           {SHIPPING_REGIONS.map((region) => (
             <div key={region.country} className="home__region">
-              <span className="home__region-flag">{region.flag}</span>
+              <span className="home__region-flag">
+                <img src={region.flagImage} alt={`${region.country} flag`} loading="lazy" />
+              </span>
               <div>
                 <p className="home__region-country">{region.country}</p>
                 <p className="home__region-detail">{region.detail}</p>
@@ -247,12 +249,12 @@ const CATEGORY_SHOWCASES = [
     categorySlug: 'home-outdoor',
     bannerImage: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=500',
     items: [
-      { label: 'Coffee mugs', fromPrice: 18, image: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=200' },
-      { label: 'Plant pots', fromPrice: 22, image: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=200' },
-      { label: 'Electric kettle', fromPrice: 34, image: 'https://images.unsplash.com/photo-1622220822304-6cdb01b86a73?w=200' },
-      { label: 'Throw pillows', fromPrice: 26, image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?w=200' },
-      { label: 'Camping lantern', fromPrice: 21, image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=200' },
-      { label: 'Cooking pan set', fromPrice: 48, image: 'https://images.unsplash.com/photo-1584990347449-a8b1605c2bf6?w=200' },
+      { label: 'FireGlow Tabletop', fromPrice: 34.98, image: 'https://assets.wfcdn.com/im/74581830/compr-r85/3164/316421335/Tabletop+Fire+Pit+Indoor+Concrete+Personal+Table+Top+Firepit+Outdoor+Mini+Portable+Flame+Bowl+for+Smores+Maker+Round+Smokeless+Firepits+for+Patio+Balcony.jpg' },
+      { label: 'Hammock Swing Chair', fromPrice: 39.99, image: 'https://antsll.com/wp-content/uploads/2023/10/outdoor-hammock-hanging-chair-nest-hammock-swing-chair-560700.png' },
+      { label: 'Solar Garden Lanterns', fromPrice: 24.99, image: 'https://freemans.scene7.com/is/image/OttoUK/355w/Smart-Garden-Pack-of-4-Viva!-Solar-Lanterns~19J652FRSP.jpg' },
+      { label: 'Inflatable Air Mattress', fromPrice: 129.97, image: 'https://i5.walmartimages.com/seo/Intex-PremAire-II-Fiber-Tech-Elevated-Air-Mattress-with-Built-In-Pump-Queen_db899a94-12ac-48fa-9c00-ea076b580fef.d4fd406d190a1a2640033392113cf096.jpeg' },
+      { label: 'Comfort Seater Sofa', fromPrice: 149.99, image: 'https://tse1.mm.bing.net/th/id/OIP.eRvkyvwHBv88Vg1WyUsmPwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
+      { label: 'Comfort 2-Seater Sofa', fromPrice: 200, image: 'https://tse2.mm.bing.net/th/id/OIP.LeCTGxCpnKALAxyqfIN-RwHaFj?rs=1&pid=ImgDetMain&o=7&rm=3' },
     ],
   },
   {
@@ -294,12 +296,12 @@ const EXTRA_SERVICES = [
 ]
 
 const SHIPPING_REGIONS = [
-  { country: 'United States', detail: '3–5 business days', flag: '🇺🇸' },
-  { country: 'United Kingdom', detail: '4–6 business days', flag: '🇬🇧' },
-  { country: 'Pakistan', detail: '2–4 business days', flag: '🇵🇰' },
-  { country: 'Australia', detail: '5–7 business days', flag: '🇦🇺' },
-  { country: 'Canada', detail: '4–6 business days', flag: '🇨🇦' },
-  { country: 'United Arab Emirates', detail: '3–5 business days', flag: '🇦🇪' },
+  { country: 'United States', detail: '3-5 business days', flagImage: 'https://flagcdn.com/w40/us.png' },
+  { country: 'United Kingdom', detail: '4-6 business days', flagImage: 'https://flagcdn.com/w40/gb.png' },
+  { country: 'Pakistan', detail: '2-4 business days', flagImage: 'https://flagcdn.com/w40/pk.png' },
+  { country: 'Australia', detail: '5-7 business days', flagImage: 'https://flagcdn.com/w40/au.png' },
+  { country: 'Canada', detail: '4-6 business days', flagImage: 'https://flagcdn.com/w40/ca.png' },
+  { country: 'United Arab Emirates', detail: '3-5 business days', flagImage: 'https://flagcdn.com/w40/ae.png' },
 ]
 
 function CountdownBox({ label, value }) {

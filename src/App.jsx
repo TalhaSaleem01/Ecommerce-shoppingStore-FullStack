@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import CartDrawer from './components/CartDrawer'
+import ScrollToTop from './components/ScrollToTop.jsx'
 import { RequireAuth, RequireAdmin } from './components/RouteGuards'
 
 import Home from './pages/Home'
@@ -13,10 +15,11 @@ import Orders from './pages/Orders'
 import Admin from './pages/Admin'
 import Help from './pages/Help'
 import NotFound from './pages/NotFound'
-
+import Checkout from './pages/Checkout.jsx'
 export default function App() {
   return (
     <>
+      <ScrollToTop />
       <Header />
       <main style={{ flex: 1 }}>
         <Routes>
@@ -26,6 +29,7 @@ export default function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path='/checkout' element={<Checkout/>}/>
           <Route
             path="/orders"
             element={
@@ -47,6 +51,7 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+      <CartDrawer />
     </>
   )
 }

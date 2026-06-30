@@ -8,15 +8,37 @@
   gap: 24px;
   margin-top: 24px;
 }
+
 .home__hero {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
 }
 
 .home__hero-img {
   width: 100%;
-  height: 420px;
+  height: auto;
+  aspect-ratio: 16 / 6;
   display: block;
   border-radius: 12px;
+  object-fit: cover;
+  object-position: left center;
+}
+
+@media (max-width: 860px) {
+  .home__hero-img {
+    aspect-ratio: 16 / 9;
+    object-position: left center;
+  }
+}
+
+@media (max-width: 560px) {
+  .home__hero-img {
+    aspect-ratio: 4 / 3;
+    object-position: left center;
+  }
 }
 
 .home__category-rail {
@@ -51,16 +73,6 @@
   background: var(--color-primary-light);
   color: var(--color-primary);
   font-weight: 600;
-}
-
-.home__hero {
-  /* background: linear-gradient(135deg, #a7e8d2 0%, #bfe3f0 100%);
-  border-radius: var(--radius-lg); */
-  /* padding: 48px; */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 14px;
 }
 
 .home__hero-eyebrow {
@@ -147,7 +159,6 @@
   to { background-position: -200% 0; }
 }
 
-/* ---------- Deals and offers (matches mockup: info card + countdown + 5 items) ---------- */
 .home__deals {
   display: grid;
   grid-template-columns: 220px repeat(5, 1fr);
@@ -246,7 +257,6 @@
   border-radius: 12px;
 }
 
-/* ---------- Category showcase rows (image tile + sub-category grid) ---------- */
 .home__showcase {
   display: grid;
   grid-template-columns: 220px 1fr;
@@ -331,7 +341,6 @@
   flex-shrink: 0;
 }
 
-/* ---------- Quote / inquiry banner (adapted from "send requests to suppliers") ---------- */
 .home__quote-banner {
   margin-top: 40px;
 }
@@ -465,8 +474,19 @@
 }
 
 .home__region-flag {
-  font-size: 26px;
-  line-height: 1;
+  width: 36px;
+  height: 26px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+.home__region-flag img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
 .home__region-country {
@@ -510,6 +530,25 @@
   }
 }
 
+@media (max-width: 860px) {
+  .home__hero-row {
+    grid-template-columns: 1fr;
+    margin-top: 8px;
+  }
+  .home__category-rail {
+    display: none;
+  }
+  .home__hero {
+    padding: 0;
+  }
+  .home__hero h1 {
+    font-size: 26px;
+  }
+  .home__hero-img {
+    height: 260px;
+  }
+}
+
 @media (max-width: 700px) {
   .home__deals {
     grid-template-columns: repeat(2, 1fr);
@@ -527,31 +566,14 @@
 }
 
 @media (max-width: 560px) {
-  .home__services-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .home__regions-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 860px) {
   .home__hero-row {
-    grid-template-columns: 1fr;
+    margin-top: 4px;
   }
-  .home__category-rail {
-    display: none;
+  .home__hero-img {
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-position: left center;
   }
-  .home__hero {
-    padding: 32px 24px;
-  }
-  .home__hero h1 {
-    font-size: 26px;
-  }
-}
-
-@media (max-width: 560px) {
   .home__grid,
   .home__grid--wide {
     grid-template-columns: repeat(2, 1fr);
@@ -566,5 +588,15 @@
   }
   .home__quote-banner-inner {
     padding: 28px 24px;
+  }
+  .home__services-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .home__regions-grid {
+    grid-template-columns: 1fr;
+  }
+  .home__region {
+    padding: 13px 14px;
   }
 }

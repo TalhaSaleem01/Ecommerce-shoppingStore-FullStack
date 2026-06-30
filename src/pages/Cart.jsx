@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
-import { placeOrder } from '../lib/orders'
 import { FALLBACK_IMAGE } from '../lib/fallbackImage'
 import './Cart.css'
 
@@ -11,13 +10,12 @@ const SHIPPING_FLAT = 10
 const TAX_RATE = 0.05
 
 export default function Cart() {
-  const { items, savedItems, subtotal, updateQuantity, removeItem, removeAll, saveForLater, refreshCart } = useCart()
+  const { items, savedItems, subtotal, updateQuantity, removeItem, removeAll, saveForLater } = useCart()
   const { user } = useAuth()
   const { showToast } = useToast()
   const navigate = useNavigate()
   const [coupon, setCoupon] = useState('')
   const [discount, setDiscount] = useState(0)
-  const [placing, setPlacing] = useState(false)
 
   const tax = subtotal * TAX_RATE
   const shipping = items.length > 0 ? SHIPPING_FLAT : 0
@@ -26,29 +24,20 @@ export default function Cart() {
   function applyCoupon() {
     if (coupon.trim().toUpperCase() === 'SAVE10') {
       setDiscount(subtotal * 0.1)
-      showToast('Coupon applied — 10% off', 'success')
+      showToast('Coupon applied - 10% off', 'success')
     } else {
       setDiscount(0)
       showToast('Invalid coupon code', 'error')
     }
   }
 
-  async function handleCheckout() {
+  function handleCheckout() {
     if (!user) {
       navigate('/login')
       return
     }
     if (items.length === 0) return
-    setPlacing(true)
-    const { error } = await placeOrder(user.id, items, total)
-    setPlacing(false)
-    if (error) {
-      showToast('Checkout failed — please try again', 'error')
-      return
-    }
-    showToast('Order placed successfully!', 'success')
-    await refreshCart()
-    navigate('/orders')
+    navigate('/checkout', { state: { discount } })
   }
 
   if (!user) {
@@ -128,8 +117,8 @@ export default function Cart() {
               </div>
             </div>
 
-            <button className="cart__checkout-btn" onClick={handleCheckout} disabled={placing}>
-              {placing ? 'Placing order...' : `Checkout (${items.length} item${items.length === 1 ? '' : 's'})`}
+            <button className="cart__checkout-btn" onClick={handleCheckout}>
+              Checkout ({items.length} item{items.length === 1 ? '' : 's'})
             </button>
           </div>
         </div>

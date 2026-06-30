@@ -9,6 +9,7 @@ export function CartProvider({ children }) {
   const [items, setItems] = useState([])      // active cart items, each with joined product
   const [savedItems, setSavedItems] = useState([])
   const [loading, setLoading] = useState(false)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
   const refreshCart = useCallback(async () => {
     if (!user) {
@@ -34,19 +35,28 @@ export function CartProvider({ children }) {
     refreshCart()
   }, [refreshCart])
 
+  const openDrawer = () => setIsDrawerOpen(true)
+  const closeDrawer = () => setIsDrawerOpen(false)
+
   const addToCart = async (productId, quantity = 1) => {
     if (!user) return { error: { message: 'not_authenticated' } }
 
     const existing = items.find((row) => row.product.id === productId)
+    let result
     if (existing) {
-      return updateQuantity(existing.id, existing.quantity + quantity)
+      result = await updateQuantity(existing.id, existing.quantity + quantity)
+    } else {
+      const { error } = await supabase
+        .from('cart_items')
+        .insert({ user_id: user.id, product_id: productId, quantity, saved_for_later: false })
+      if (!error) await refreshCart()
+      result = { error }
     }
 
-    const { error } = await supabase
-      .from('cart_items')
-      .insert({ user_id: user.id, product_id: productId, quantity, saved_for_later: false })
-    if (!error) await refreshCart()
-    return { error }
+    if (!result.error) {
+      openDrawer()
+    }
+    return result
   }
 
   const updateQuantity = async (cartItemId, quantity) => {
@@ -90,7 +100,6 @@ export function CartProvider({ children }) {
     [items]
   )
 
-
   const itemCount = useMemo(() => items.length, [items])
 
   const value = {
@@ -105,6 +114,9 @@ export function CartProvider({ children }) {
     removeAll,
     saveForLater,
     refreshCart,
+    isDrawerOpen,
+    openDrawer,
+    closeDrawer,
   }
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>

@@ -6,6 +6,7 @@ import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { ToastProvider } from './context/ToastContext'
+import { LocaleProvider } from './context/LocaleContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -13,7 +14,9 @@ createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <ToastProvider>
           <CartProvider>
-            <App />
+            <LocaleProvider>
+              <App />
+            </LocaleProvider>
           </CartProvider>
         </ToastProvider>
       </AuthProvider>
