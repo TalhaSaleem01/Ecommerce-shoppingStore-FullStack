@@ -9,6 +9,5 @@ if (!supabaseUrl || !supabaseAnonKey) {
     'Add them to your .env file at the project root, then restart `npm run dev`.'
   )
 }
-console.log("URL:", import.meta.env.VITE_SUPABASE_URL);
-console.log("KEY EXISTS:", !!import.meta.env.VITE_SUPABASE_ANON_KEY);
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
